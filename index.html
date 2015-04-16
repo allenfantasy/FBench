@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>GreenSock Animation Platform (GSAP) Speed Test</title>
+    <meta name="viewport" content="width=620, maximum-scale=1, user-scalable=false">
+
+    <!-- Famo.us -->
+    <link href="/famous.css" rel="stylesheet" type="text/css">
+    <script src="/js/functionPrototypeBind.js"></script>
+    <script src="/js/classList.js"></script>
+    <script src="/js/requestAnimationFrame.js"></script>
+    <script src="/js/famous-global.js"></script>
+    <!-- End of Famo.us -->
+
+    <!-- Fastclick -->
+    <script src="/js/fastclick.min.js"></script>
+
+    <link href="/style.css" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+  </head>
+
+  <body>
+    <div id="footer">
+      <div id="fps">-- fps</div>
+      <form id="form">
+        <li>
+          Dots:
+          <select id="dotQuantity" size="1">
+            <option value="25" selected="selected">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+            <option value="750">750</option>
+            <option value="1000">1000</option>
+            <option value="1250">1250</option>
+            <option value="1500">1500</option>
+            <option value="2000">2000</option>
+            <option value="2500">2500</option>
+            <option value="3000">3000</option>
+          </select>
+        </li>
+        <li>
+          Duration:
+          <select id="duration" size="1">
+            <option value="0.5">0.5 seconds</option>
+            <option value="0.75" selected="selected">0.75 seconds</option>
+            <option value="1">1 second</option>
+            <option value="5">5 seconds</option>
+          </select>
+        </li>
+        <li>
+          Engine:
+          <select id="engine" size="1">
+            <option value="zepto">Zepto</option>
+            <option value="zeptotransform">Zepto (translate/scale)</option>
+            <option value="jquery" selected="selected">jQuery</option>
+            <option value="tweenjs">TweenJS</option>
+            <option value="famous">Famo.us</option>
+            <option value="gsap">GSAP</option>
+            <option value="gsaptransform3d">GSAP (transform3d)</option>
+            <option value="gsaptransform">GSAP (translate/scale)</option>
+            <option value="webanimations">Web Animations</option>
+            <option value="webanimations3d">Web Animations 3d</option>
+            <option value="velocity">Velocity.js</option>
+            <option value="velocity3d">Velocity.js 3d</option>
+            <!--<option value="jqueryGSAP">jquery.gsap.js plugin</option>-->
+            <!--<option value="mootools">MooTools</option>-->
+            <!--<option value="dojo">Dojo</option>-->
+            <!-- too buggy for now to include <option value="webanimations">Web Animations (Polymer)</option> -->
+          </select>
+        </li>
+        <li>
+          <button id="start" type="button" value="test" style="line-height:150%;"> START </button>
+        </li>
+      </form>
+    </div>
+
+    <div id="instructions" style="opacity: 1; visibility: inherit;">
+      <h1>HTML5 Animation Speed Test</h1>
+      <p>Stress test the performance of various common JavaScript libraries and
+        compare them with GSAP (<a href="http://www.greensock.com/gsap-js/">GreenSock Animation Platform</a>). This test does <strong>not</strong> use a canvas element 
+        (although it certainly could) - it simply animates the left, top, 
+        width, and height css properties of standard image elements. There are also versions of the GSAP and Zepto tests that use transforms ("translate/scale") instead so that you can compare performance.
+        The goal was to be extremely fair and use the same code for everything except the actual animation. No tricks. 
+        Look at the source for yourself or run your own tests to confirm.</p>
+      <p>Choose the number of dots you'd like to animate and then choose the 
+        engine and click the "START" button below. Watch the <strong>fps</strong> in the lower right 
+        (higher is better - it is the average frames per second rendered). 
+        As more dots are animated, you'll see the performance gap widen. Try to push things until the fps drops below 30fps. When the 
+        CPU isn't breaking a sweat, fps should hover around 100fps in most modern browsers.</p>
+      <p>Note: Zepto uses CSS3 transitions which won't work in some browsers (like IE9). Also beware that some browsers incorrectly fire requestAnimationFrame events even when the browser clearly isn't updating the screen and/or they handle JS in a different thread, thus 10fps transitions may inaccurately report in JS as running at 50fps. So when you're watching Zepto animate, don't pay much attention to the fps counter because it may be artificially high. Instead, watch the actual animation of the starfield and how smooth it is (or not). </p>
+    </div>
+
+    <div id="container"></div>
+
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/velocity.min.js"></script>
+    <script src="/js/CSSPlugin.min.js"></script>
+    <!--<script src="/js/jquery.gsap.min.js"></script>-->
+    <script src="/js/TweenLite.min.js"></script>
+    <script src="/js/mootools-core-1.4.5-full-compat-yc.js"></script>
+    <script src="/js/dojo.js"></script>
+    <script src="/js/easing.js"></script>
+    <script src="/js/easeljs-0.4.2.min.js"></script>
+    <script src="/js/tweenjs-0.6.0.min.js"></script>
+    <script src="/js/tweenjs-cssplugin.js"></script>
+    <script src="/js/Ease.js"></script>
+    <script src="/js/zepto.min.js"></script>
+    <script src="/js/web-animations.min.js"></script>
+
+    <script src="/js/lodash.js"></script>
+    <script src="/js/test.js"></script>
+  </body>
+</html>

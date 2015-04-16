@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Velocity Test</title>
+  <style>
+    body {
+      margin: 0;
+    }
+    #target {
+      width: 100px;
+      height: 100px;
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="target"></div>
+  <button id="start">Start</button>
+  <script src="./public/js/jquery-1.10.2.min.js"></script>
+  <script src="./public/js/velocity.min.js"></script>
+  <script>
+    if (window.jQuery) {
+      var V = $.Velocity;
+    } else {
+      var V = Velocity;
+    }
+    var box = document.getElementById('target');
+    function animate() {
+      V(box, {
+        scale: 2
+      }, {
+        easing: 'linear',
+        duration: 500,
+        complete: function(box) {
+          V(box, { scale: 1 }, { duration: 0 });
+          //console.log(box); 
+        }
+      });
+    }
+    document.getElementById('start').addEventListener('click', animate);
+  </script>
+</body>
+</html>

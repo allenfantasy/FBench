@@ -1,0 +1,4 @@
+{
+  "varbose"   : true,
+  "ignore"    : ["public/", "node_modules/"]
+}

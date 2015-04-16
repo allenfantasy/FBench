@@ -1,0 +1,45 @@
+extends ./application
+
+block head
+  link(rel="stylesheet" href="./records.css")
+block content
+  .container 
+    h1 FPS 记录
+    table.pure-table.center
+      thead
+        tr
+          th 动画方法
+          th 移动的点的个数
+          th 样本自由度(dF)
+          th FPS
+          th 标准误差(MoE)
+          th 方差 
+          th 浏览器 
+          th 浏览器版本 
+          th 操作系统 
+          th 是否移动设备 
+      tbody
+        each r in records
+          - var samples = r.samples.split(',')
+          tr
+            td.case-name(data-id="#{r.id}")= r.name
+            td= r.dotSize
+            td= r.df
+            if samples.length === 0
+              td N/A
+              td N/A
+              td N/A
+            else
+              td= r.mean.toFixed(3)
+              td= r.moe.toFixed(3)
+              td= r.variance.toFixed(3)
+            td= r.browserName
+            td= r.browserVer
+            td= r.os
+            td= r.isMobile ? '是' : '否'
+
+    br
+    button#clearup.pure-button.button-error 清空记录
+
+block scripts
+  script(src="./js/records.js")
