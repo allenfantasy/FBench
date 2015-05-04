@@ -8,7 +8,8 @@ var ua = require('ua_parser');
 var _ = require('lodash');
 var debug = require('debug')('http');
 
-mongoose.connect('mongodb://localhost/benchmark');
+var MONGODB_URI = process.env.MONGOLAB_URI || 'mongodb://localhost/benchmark';
+mongoose.connect(MONGODB_URI);
 
 var Record = require('./models/record');
 
@@ -35,7 +36,7 @@ app.get('/records', function(req, res) {
     records = _.sortBy(records, 'mean').reverse();
 
     res.render('records', { records: records });
-  });  
+  });
 });
 
 app.post('/records', function(req, res) {
@@ -49,7 +50,7 @@ app.post('/records', function(req, res) {
     body.moe = 0;
     body.rme = 0;
   }
-  
+
   var result = ua.userAgent(req.headers['user-agent']);
   body.browserName = result.browser.name;
   body.browserVer = result.browser.version.major + '.' + result.browser.version.minor;
@@ -81,5 +82,7 @@ app.delete('/records/:id', function(req, res) {
   });
 });
 
-app.listen(3000);
-console.log('app is running on 3000');
+var port = process.env.PORT || 3000;
+app.listen(port, function() {
+  console.log('app is running on 3000');
+});
