@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>GreenSock Animation Platform (GSAP) Speed Test</title>
+    <title>HTML5 Animation Speed Test</title>
     <meta name="viewport" content="width=620, maximum-scale=1, user-scalable=false">
 
     <!-- Famo.us -->
@@ -81,17 +81,16 @@
 
     <div id="instructions" style="opacity: 1; visibility: inherit;">
       <h1>HTML5 Animation Speed Test</h1>
-      <p>Stress test the performance of various common JavaScript libraries and
-        compare them with GSAP (<a href="http://www.greensock.com/gsap-js/">GreenSock Animation Platform</a>). This test does <strong>not</strong> use a canvas element 
-        (although it certainly could) - it simply animates the left, top, 
+      <p>Stress test the performance of various common JavaScript libraries. This test does <strong>not</strong> use a canvas element
+        (although it certainly could) - it simply animates the left, top,
         width, and height css properties of standard image elements. There are also versions of the GSAP and Zepto tests that use transforms ("translate/scale") instead so that you can compare performance.
-        The goal was to be extremely fair and use the same code for everything except the actual animation. No tricks. 
+        The goal was to be extremely fair and use the same code for everything except the actual animation. No tricks.
         Look at the source for yourself or run your own tests to confirm.</p>
-      <p>Choose the number of dots you'd like to animate and then choose the 
-        engine and click the "START" button below. Watch the <strong>fps</strong> in the lower right 
-        (higher is better - it is the average frames per second rendered). 
-        As more dots are animated, you'll see the performance gap widen. Try to push things until the fps drops below 30fps. When the 
-        CPU isn't breaking a sweat, fps should hover around 100fps in most modern browsers.</p>
+      <p>Choose the number of dots you'd like to animate and then choose the
+        engine and click the "START" button below. Watch the <strong>fps</strong> in the lower right
+        (higher is better - it is the average frames per second rendered).
+        As more dots are animated, you'll see the performance gap widen. Try to push things until the fps drops below 30fps. When the
+        CPU isn't breaking a sweat, fps should hover around 60fps in most modern browsers.</p>
       <p>Note: Zepto uses CSS3 transitions which won't work in some browsers (like IE9). Also beware that some browsers incorrectly fire requestAnimationFrame events even when the browser clearly isn't updating the screen and/or they handle JS in a different thread, thus 10fps transitions may inaccurately report in JS as running at 50fps. So when you're watching Zepto animate, don't pay much attention to the fps counter because it may be artificially high. Instead, watch the actual animation of the starfield and how smooth it is (or not). </p>
     </div>
 
