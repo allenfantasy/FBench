@@ -600,7 +600,7 @@ jQuery(function() {
   };
 
   function startTest() {
-    alert(inProgress);
+    //alert(inProgress);
     if (!inProgress) {
       toggleTest();
     }
@@ -608,7 +608,7 @@ jQuery(function() {
   function toggleTest() {
     inProgress = !inProgress;
     var i, size;
-    if (inProgress) {
+    if (inProgress) { // 开始测试
       currentTest = tests[engineInput.value];
       size = (currentTest.nativeSize ? "16px" : "1px");
       centerX = jQuery(window).width() / 2;
@@ -668,7 +668,7 @@ jQuery(function() {
       TweenLite.to(instructions, 0.7, {css:{autoAlpha:0}, overwrite:"all"});
       TweenLite.delayedCall(1, activateFPS); //wait a little bit to allow the dots to fill the screen before starting to report the FPS
 
-    } else {
+    } else { // 停止测试并刷新页面
       //adjust the fps style and fade in the instructions
       //ticker.removeEventListener("tick", updateFPS);
       fpsElem.style.backgroundColor = "#CCCCCC";
@@ -771,6 +771,7 @@ jQuery(function() {
       });
 
       samples = [];
+      location.reload();
     }
   }
 
@@ -839,14 +840,18 @@ jQuery(function() {
   jQuery("#start").on('touchstart click', function(e) {
     e.stopPropagation();
     e.preventDefault();
-    if (event.handled !== true) {
+    if (e.handled !== true) {
       startTest();
 
-      event.handled = true;
+      e.handled = true;
     } else {
       return true;
     }
   });
+  jQuery("#checkRecord").on('touchstart click', function() {
+    window.location = '/records';
+  });
+
   //jQuery("#start").on({ 'touchend': startTest });
   jQuery("#dotQuantity,#duration,#engine").change(function(e) {
     if (inProgress) {
