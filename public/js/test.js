@@ -767,11 +767,11 @@ jQuery(function() {
           console.log(data);
           console.log(textStatus);
           console.log(xhr);
+          location.reload();
         }
       });
 
       samples = [];
-      location.reload();
     }
   }
 
