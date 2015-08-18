@@ -25,11 +25,13 @@ app.set('dotSizes', [25,50,100,200,300,400,500,750,1000,1250,1500,2000,2500,3000
 app.set('durations', [0.5, 0.75, 1, 5]);
 app.set('aniMethods', ["zepto", "zeptotransform", "jquery", "tweenjs", "famous", "gsap", "gsaptransform", "gsaptransform3d", "webanimations", "webanimations3d", "velocity", "velocity3d"]);
 
+var DEFAULT_DOTSIZE = 500;
+
 app.get('/', function(req, res) {
   res.render('index', {
     title: 'HTML5 Animation Speed Test',
 
-    dotSize: 300,
+    dotSize: DEFAULT_DOTSIZE,
     duration: 0.75,
     aniMethod: "jquery",
 
@@ -49,10 +51,11 @@ app.get('/records', function(req, res) {
     res.render('records', {
       records: records,
 
-      dotSize: 300,
+      dotSize: DEFAULT_DOTSIZE,
       //duration: 0.75,
 
       dotSizes: app.get('dotSizes'),
+      aniMethods: app.get('aniMethods'),
       //durations: app.get('durations'),
     });
   });
@@ -61,16 +64,22 @@ app.get('/records', function(req, res) {
 // API service
 app.get('/api/records', function(req, res) {
   var VALID_SYSTEMS = ['mac', 'windows', 'ios', 'android'];
-  var cond = _.assign({}, req.query);
-  var os = cond.os;
+  var cond = _.assign({
+    aniMethods: []
+  }, req.query);
 
+  // TODO 返回某个(或任意个) animation method 在 dotSize 变化时的 FPS 表现
+
+  var os = cond.os;
   if (os && VALID_SYSTEMS.indexOf(os) > -1) {
     cond.os = os;
   } else if (os) { // invalid input
     return res.json({ code: 400, msg: 'bad input' });
   }
 
-  //Record.find(cond).exec(function(err, records) {
+  cond.name = { $in: cond.aniMethods };
+  delete cond.aniMethods;
+
   Record.find(cond).exec(function(err, records) {
     if (err) {
       console.log(err);

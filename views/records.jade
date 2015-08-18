@@ -2,8 +2,20 @@ extends ./application
 
 block head
   link(rel="stylesheet" href="./records.css")
+block nav
+  li
+    a(href="/") Test
+  li.active
+    a(href="/records") Result
+
 block content
   form#controls.form-horizontal
+    .form-group
+      label.col-lg-2.control-label 查询条件
+      .col-lg-10
+        select#queryType.form-control
+          option(value="dotSize" selected="selected") 点的个数
+          option(value="aniMethod") 动画方法 
     .form-group
       label.col-lg-2.control-label 点的个数
       .col-lg-10
@@ -14,6 +26,16 @@ block content
             else
               input(type="radio" name="dotSize" value="#{val}")
             | #{val} 
+    .form-group
+      label.col-lg-2.control-label 动画方法
+      .col-lg-10
+        each method in aniMethods
+          label.checkbox-inline
+            input(type="checkbox" name="aniMethod" value="#{method}" checked="checked")
+            | #{method}
+    .col-lg-offset-2
+      .form-group
+        button#submit.btn.btn-success(type="submit") 查询 
   #record-chart
   #record-table
     h1 FPS 记录

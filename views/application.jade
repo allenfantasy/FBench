@@ -27,10 +27,11 @@ html
           a.navbar-brand(href="#") Project name
         #navbar.collapse.navbar-collapse
           ul.nav.navbar-nav
-            li
-              a(href="/") Test
-            li
-              a(href="/records") Result
+            block nav
+              li
+                a(href="/") Test
+              li
+                a(href="/records") Result
     .container
       block content
     script(src="./js/jquery-1.10.2.min.js")

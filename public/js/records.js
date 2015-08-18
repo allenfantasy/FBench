@@ -39,7 +39,7 @@ function renderChart(categories, series) {
     xAxis: { categories: categories },
     yAxis: {
       min: 0,
-      title: { text: 'Frame Rate (fps)' },
+      title: { text: '帧速率 (fps)' },
       max: 60
     },
     tooltip: {
@@ -87,10 +87,12 @@ function renderTable(theads, records) {
               + _.map(records, function(r) { return rowTemplate(r); }).join('')
               + '</tbody>'
 
+  $('#record-table table').html('');
   $(htmlStr).appendTo($('#record-table table'));
 }
 
-function query(cond) {
+function query(type, cond) {
+  //var data = (type === 'dotSize') ? { dotSize: cond.dotSize } : { aniMethods: cond.aniMethods };
   var theads = ['动画方法', '移动的点的个数', '样本自由度(dF)', 'FPS', '标准误差(MoE)', '方差', '浏览器', '操作系统', '是否移动设备']; 
   $.ajax({
     url: '/api/records',
@@ -106,17 +108,39 @@ function query(cond) {
 };
 
 $(function() {
+  var queryType = 'dotSize';
   var cond = {
     dotSize: $('input[name=dotSize]:checked').val(),
+    aniMethods: _.map($('input[name=aniMethod]:checked'), function(elem) {
+      return $(elem).val();
+    }),
   }
-  query(cond);
+  query(queryType, cond);
+
+  $('select#queryType').on('change', function() {
+    // TODO
+  });
 
   $('input[name=dotSize]').on('change', function(e) {
     cond.dotSize = $(this).val();
-    query(cond);
   });
 
-  $('input[name=type]').on('change', function() {
-    // Base to different animation types
+  $('input[name=aniMethod]').on('change', function(e) {
+    // Base on different animation types
+    var $this = $(this);
+    if ($this.is(':checked')) {
+      // add 
+      cond.aniMethods.push($this.val());
+    } else {
+      // remove
+      _.remove(cond.aniMethods, function(m) {
+        return m == $this.val();
+      });
+    }
+  });
+
+  $('form#controls').on('submit', function(e) {
+    e.preventDefault();
+    query(queryType, cond);
   });
 });
