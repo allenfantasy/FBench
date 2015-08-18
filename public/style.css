@@ -94,10 +94,6 @@ a, a:hover, a:visited {
   border-width:1px;
   font-size:24px;
 }
-#start {
-  width:150px;
-  height:50px;
-}
 #footer form li {
   display:block;
   float:left;
