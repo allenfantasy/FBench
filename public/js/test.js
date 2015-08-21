@@ -849,7 +849,7 @@ jQuery(function() {
     }
   });
   jQuery("#checkRecord").on('touchstart click', function() {
-    window.location = '/records.html';
+    window.location = '/records';
   });
 
   //jQuery("#start").on({ 'touchend': startTest });
