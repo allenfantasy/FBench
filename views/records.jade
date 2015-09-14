@@ -11,11 +11,14 @@ block nav
 block content
   form#controls.form-horizontal
     .form-group
-      label.col-lg-2.control-label 查询条件
+      label.col-lg-2.control-label 操作系统
       .col-lg-10
-        select#queryType.form-control
-          option(value="dotSize" selected="selected") 点的个数
-          option(value="aniMethod") 动画方法 
+        select#systemType.form-control
+          each val in systems
+            if val == system
+              option(value="#{val}" selected="selected")= val
+            else
+              option(value="#{val}")= val
     .form-group
       label.col-lg-2.control-label 点的个数
       .col-lg-10

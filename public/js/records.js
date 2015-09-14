@@ -11,7 +11,7 @@ $('#clearup').on('click', function(e) {
   }
 });
 
-$('.case-name').on('click', function(e) {
+$('#record-table').on('click', 'td.case-name', function(e) {
   var $this = $(this)
     , id = $this.data('id')
     , name = $this.html();
@@ -100,8 +100,7 @@ function query(type, cond) {
     data: cond,
     type: 'GET',
     success: function(data) {
-      //console.log(data);
-      renderChart(data.aniMethods, data.records);
+      renderChart(data.categories, data.records);
       renderTable(theads, data.origRecords);
     }
   })
@@ -114,11 +113,12 @@ $(function() {
     aniMethods: _.map($('input[name=aniMethod]:checked'), function(elem) {
       return $(elem).val();
     }),
+    os: $('select#systemType').val()
   }
   query(queryType, cond);
 
-  $('select#queryType').on('change', function() {
-    // TODO
+  $('select#systemType').on('change', function() {
+    cond.os = $(this).val();
   });
 
   $('input[name=dotSize]').on('change', function(e) {

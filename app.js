@@ -12,6 +12,7 @@ var MONGODB_URI = process.env.MONGOLAB_URI || 'mongodb://localhost/benchmark';
 mongoose.connect(MONGODB_URI);
 
 var Record = require('./models/record');
+var Utils = require('./lib/utils');
 
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended : false }));
@@ -24,8 +25,11 @@ app.set('view engine', 'jade');
 app.set('dotSizes', [25,50,100,200,300,400,500,750,1000,1250,1500,2000,2500,3000]);
 app.set('durations', [0.5, 0.75, 1, 5]);
 app.set('aniMethods', ["zepto", "zeptotransform", "jquery", "tweenjs", "famous", "gsap", "gsaptransform", "gsaptransform3d", "webanimations", "webanimations3d", "velocity", "velocity3d"]);
+app.set('systems', ['mac', 'windows', 'ios', 'android']);
 
-var DEFAULT_DOTSIZE = 500;
+var DEFAULT_DOTSIZE = 1000;
+var DEFAULT_METHOD = "zepto";
+var DEFAULT_OS = 'windows';
 
 app.get('/', function(req, res) {
   res.render('index', {
@@ -33,7 +37,7 @@ app.get('/', function(req, res) {
 
     dotSize: DEFAULT_DOTSIZE,
     duration: 0.75,
-    aniMethod: "jquery",
+    aniMethod: DEFAULT_METHOD,
 
     dotSizes: app.get('dotSizes'),
     durations: app.get('durations'),
@@ -52,10 +56,12 @@ app.get('/records', function(req, res) {
       records: records,
 
       dotSize: DEFAULT_DOTSIZE,
+      system: DEFAULT_OS,
       //duration: 0.75,
 
       dotSizes: app.get('dotSizes'),
       aniMethods: app.get('aniMethods'),
+      systems: app.get('systems'),
       //durations: app.get('durations'),
     });
   });
@@ -63,7 +69,6 @@ app.get('/records', function(req, res) {
 
 // API service
 app.get('/api/records', function(req, res) {
-  var VALID_SYSTEMS = ['mac', 'windows', 'ios', 'android'];
   var cond = _.assign({
     aniMethods: []
   }, req.query);
@@ -71,7 +76,7 @@ app.get('/api/records', function(req, res) {
   // TODO 返回某个(或任意个) animation method 在 dotSize 变化时的 FPS 表现
 
   var os = cond.os;
-  if (os && VALID_SYSTEMS.indexOf(os) > -1) {
+  if (os && app.get('systems').indexOf(os) > -1) {
     cond.os = os;
   } else if (os) { // invalid input
     return res.json({ code: 400, msg: 'bad input' });
@@ -88,47 +93,11 @@ app.get('/api/records', function(req, res) {
     }
 
     var aniMethods = [];
-    var origRecords = records;
+    var origRecords = _.sortByAll(records, ['browserName', 'name']);
 
-    //records = _.sortBy(records, 'mean').reverse();
-    records = records.map(function(r) {
-      if (aniMethods.indexOf(r.name) === -1) aniMethods.push(r.name); 
-      return {
-        name: r.name,
-        mean: r.mean,
-        sem: r.sem,
-        variance: r.variance,
-        moe: r.moe,
-        rme: r.rme,
-        dotSize: r.dotSize,
-        browser: r.browserName + ' ' + r.browserVer,
-        os: r.os
-      };
-    });
-    records = _.groupBy(records, function(r) {
-      return r.browser;
-    });
+    var results = Utils.groupByBrowser(records);
 
-    _.each(records, function(data, key) {
-      var arr = [];
-      _.each(aniMethods, function(m) {
-        var d = _.find(data, { 'name' : m });
-        if (d) {
-          arr.push(d.mean);
-        } else {
-          arr.push(0);
-        }
-      });
-      records[key] = arr;
-    });
-    records = _.map(records, function(r, name) {
-      return {
-        name: name,
-        data: r 
-      };
-    });
-
-    res.json({ records: records, aniMethods: aniMethods, origRecords: origRecords });
+    res.json({ records: results.records, categories: results.categories, origRecords: origRecords });
   });
 });
 
